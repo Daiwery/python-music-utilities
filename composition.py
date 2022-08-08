@@ -9,7 +9,7 @@ from note import Note
 
 class Sequence:
     """
-    Note sequence.
+    The note sequence.
     """
 
     def __init__(self, notes: List[Note], id_track, next_sequences=None, delay: float = 0, start_end: bool = False):
@@ -81,7 +81,7 @@ class Sequence:
 
 class Composition:
     """
-    Composition
+    The composition
     """
 
     def __init__(self):

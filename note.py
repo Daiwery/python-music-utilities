@@ -39,14 +39,26 @@ class BasicNote:
         >>> BasicNote(11, 0) + 1 == BasicNote(0, 1)
         True
         """
-        note = BasicNote(self.note + other, self.octave)
+        note = self.copy()
+        note.note += other
         note._normalize()
         return note
+
+    def copy(self):
+        return BasicNote(self.note, self.octave)
+
+    def __sub__(self, other: int):
+        return self.__add__(-other)
 
     def __eq__(self, other):
         if isinstance(other, BasicNote):
             return self.note == other.note and self.octave == other.octave
         return False
+
+    def __str__(self):
+        return str({"note": self.note, "octave": self.octave})
+
+    __repr__ = __str__
 
 
 class Note(BasicNote):
@@ -68,3 +80,20 @@ class Note(BasicNote):
         self.duration = duration
         self.delay = delay
         self.start_end = start_end
+
+    def __eq__(self, other):
+        if isinstance(other, Note):
+            return self.note == other.note and self.octave == other.octave and \
+                   self.velocity == other.velocity and self.duration == other.duration \
+                   and self.delay == other.delay and self.start_end == other.start_end
+        return False
+
+    def __str__(self):
+        return str({"note": self.note, "octave": self.octave, "velocity": self.velocity,
+                    "duration": self.duration, "delay": self.delay, "start_end": self.start_end})
+
+    __repr__ = __str__
+
+    def copy(self):
+        note = Note(self.note, self.octave, self.velocity, self.duration, self.delay, self.start_end)
+        return note
