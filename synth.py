@@ -25,15 +25,12 @@ def synth(tracks: List[MidiTrack], bmp: int, sound_font: str, loop: bool = True)
             message.kwargs["track"] = i
             messages.append(message)
 
-    # Convert time.
     messages = transform_time(messages, bmp=bmp, to_tick=False)
 
-    # Fluidsynth.
     fs = fluidsynth.Synth()
     fs.start()
     font = fs.sfload(sound_font)
 
-    # Sets a necessary instruments.
     for i, track in enumerate(tracks):
         fs.program_select(i, font, 0, track.instrument)
 

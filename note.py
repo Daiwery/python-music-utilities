@@ -13,7 +13,7 @@ class BasicNote:
     def __init__(self, note: int, octave: int):
         self.note = note
         self.octave = octave
-        self.normalize()
+        self._normalize()
 
     def toMidi(self):
         """
@@ -23,7 +23,7 @@ class BasicNote:
         """
         return (self.octave + 1) * 12 + self.note
 
-    def normalize(self):
+    def _normalize(self):
         """
         Normalize note.
 
@@ -40,7 +40,7 @@ class BasicNote:
         True
         """
         note = BasicNote(self.note + other, self.octave)
-        note.normalize()
+        note._normalize()
         return note
 
     def __eq__(self, other):

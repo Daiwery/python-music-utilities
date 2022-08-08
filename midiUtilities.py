@@ -78,7 +78,6 @@ def transform_time(messages: List[MidiMessage], bmp: Union[int, float],
     @param to_tick: Convert to ticks or seconds.
     @return: List of midi-message with the necessary time’s attributes.
     """
-    # Sort by time.
     messages.sort(key=lambda x: x.time)
 
     # Convert from absolute time to relative time.
