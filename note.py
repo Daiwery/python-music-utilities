@@ -49,20 +49,21 @@ class BasicNote:
         return False
 
 
-class Note:
+class Note(BasicNote):
     """
     Information about note and her time.
     """
 
-    def __init__(self, note: BasicNote, velocity: int, duration: float, delay: float, start_end: bool):
+    def __init__(self, note: int, octave: int, velocity: int, duration: float, delay: float, start_end: bool):
         """
-        @param note: BasicNote.
+        @param note: Note (0..11).
+        @param octave: Octave.
         @param duration: Duration in musical note duration.
         @param velocity: Volume of note.
         @param delay: Delay in musical note duration.
         @param start_end: Delay after the start or end of the previous note.
         """
-        self.note = note
+        super().__init__(note, octave)
         self.velocity = velocity
         self.duration = duration
         self.delay = delay

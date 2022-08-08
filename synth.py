@@ -13,10 +13,10 @@ def synth(tracks: List[MidiTrack], bmp: int, sound_font: str, loop: bool = True)
     """
     Playing notes in real time using fluidsynth..
 
-    :param tracks: List of MidiTracks with raw midi-messages..
-    :param bmp: Number of metronome beats per minute (= number of quarter notes per minute).
-    :param sound_font: The path to the sound font.
-    :param loop: Play endlessly or not.
+    @param tracks: List of MidiTracks with raw midi-messages..
+    @param bmp: Number of metronome beats per minute (= number of quarter notes per minute).
+    @param sound_font: The path to the sound font.
+    @param loop: Play endlessly or not.
     """
     # Combines all messages into one track without losing track information.
     messages = []
