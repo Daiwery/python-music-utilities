@@ -23,7 +23,7 @@ class MidiMessage:
         """
         Transforms himself in midi-message.
 
-        @return: mido.Message corresponding to this message
+        :return: mido.Message corresponding to this message
         """
         return mido.Message(type=self.kind, time=self.time, **self.kwargs)
 
@@ -35,9 +35,9 @@ class MidiTrack:
 
     def __init__(self, label: str, instrument: int, messages: List[MidiMessage] = None):
         """
-        @param label: Name of track.
-        @param instrument: Instrument that is played in this track.
-        @param messages: List of midi-messages.
+        :param label: Name of track.
+        :param instrument: Instrument that is played in this track.
+        :param messages: List of midi-messages.
         """
         if messages is None:
             messages = []
@@ -49,7 +49,7 @@ class MidiTrack:
         """
         Appends list of midi-messages in track.
 
-        @param messages: List of midi-messages.
+        :param messages: List of midi-messages.
         """
         self.messages += messages
 
@@ -57,7 +57,7 @@ class MidiTrack:
         """
         Transforms himself in mido.MidiTrack.
 
-        @return: mido.MidiTrack corresponding to this track.
+        :return: mido.MidiTrack corresponding to this track.
         """
         track = mido.MidiTrack()
         track.append(mido.MetaMessage(mido.MetaMessage('track_name', name=self.label)))
@@ -72,11 +72,11 @@ def transform_time(messages: List[MidiMessage], bmp: Union[int, float],
     """
     Transforms raw midi-messages to midi-message with the necessary time’s attributes.
 
-    @param messages: List of raw midi-messages.
-    @param bmp: Number of metronome beats per minute (= number of quarter notes per minute).
-    @param ticks_per_beat: Number of ticks per beat. Specifies the degree of sampling.
-    @param to_tick: Convert to ticks or seconds.
-    @return: List of midi-message with the necessary time’s attributes.
+    :param messages: List of raw midi-messages.
+    :param bmp: Number of metronome beats per minute (= number of quarter notes per minute).
+    :param ticks_per_beat: Number of ticks per beat. Specifies the degree of sampling.
+    :param to_tick: Convert to ticks or seconds.
+    :return: List of midi-message with the necessary time’s attributes.
     """
     messages.sort(key=lambda x: x.time)
 
@@ -115,10 +115,10 @@ def write_to_file(tracks: List[MidiTrack], path: str, bmp: int,
     Writes each track to a separate midi-file.
     Performs necessary transformations before recording.
 
-    @param tracks: List of midi-tracks.
-    @param path: The directory for files.
-    @param bmp: Number of metronome beats per minute (= number of quarter notes per minute).
-    @param ticks_per_beat: Number of ticks per beat. Specifies the degree of sampling.
+    :param tracks: List of midi-tracks.
+    :param path: The directory for files.
+    :param bmp: Number of metronome beats per minute (= number of quarter notes per minute).
+    :param ticks_per_beat: Number of ticks per beat. Specifies the degree of sampling.
     """
     for i, track in enumerate(tracks):
         tracks[i].messages = transform_time(track.messages, bmp=bmp, ticks_per_beat=ticks_per_beat)

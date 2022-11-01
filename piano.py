@@ -13,10 +13,10 @@ class PianoChord:
         """
         Currently only minor and major chords are available.
 
-        @param chord: For example, Cm, D#, etc.
-        @param octave: The octave number on which the tonic is located.
-        @param is_sorted: Sort or not.
-        @param is_normalized: Normalize or not.
+        :param chord: For example, Cm, D#, etc.
+        :param octave: The octave number on which the tonic is located.
+        :param is_sorted: Sort or not.
+        :param is_normalized: Normalize or not.
         """
         keys = re.split("(m)", chord)
 
@@ -69,13 +69,13 @@ class Piano:
         If one value is passed instead of some note parameter,
         then this attribute is set equal to this value for all notes.
 
-        @param chord: Chord, specified as a PianoChord, or list of BasicNote.
-        @param duration: Duration in musical note duration.
-        @param delay: Delay in musical note duration.
-        @param velocity: Volume of note.
-        @param order: In what order to play the notes. If None, then play all the notes in the chord in order.
-        @param start_end: Delay after the start or end of the previous note.
-        @return: List of note.
+        :param chord: Chord, specified as a PianoChord, or list of BasicNote.
+        :param duration: Duration in musical note duration.
+        :param delay: Delay in musical note duration.
+        :param velocity: Volume of note.
+        :param order: In what order to play the notes. If None, then play all the notes in the chord in order.
+        :param start_end: Delay after the start or end of the previous note.
+        :return: List of note.
         """
         _len = len(chord)
 

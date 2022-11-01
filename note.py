@@ -19,7 +19,7 @@ class BasicNote:
         """
         Converts note and octave number to midi-note number.
 
-        @return: Midi-note number corresponding to the given note and octave.
+        :return: Midi-note number corresponding to the given note and octave.
         """
         return (self.octave + 1) * 12 + self.note
 
@@ -68,12 +68,12 @@ class Note(BasicNote):
 
     def __init__(self, note: int, octave: int, velocity: int, duration: float, delay: float, start_end: bool):
         """
-        @param note: Note (0..11).
-        @param octave: Octave.
-        @param duration: Duration in musical note duration.
-        @param velocity: Volume of note.
-        @param delay: Delay in musical note duration.
-        @param start_end: Delay after the start or end of the previous note.
+        :param note: Note (0..11).
+        :param octave: Octave.
+        :param duration: Duration in musical note duration.
+        :param velocity: Volume of note.
+        :param delay: Delay in musical note duration.
+        :param start_end: Delay after the start or end of the previous note.
         """
         super().__init__(note, octave)
         self.velocity = velocity
