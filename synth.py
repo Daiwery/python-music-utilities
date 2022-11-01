@@ -22,6 +22,7 @@ def synth(tracks: List[MidiTrack], bmp: int, sound_font: str, loop: bool = True)
     messages = []
     for i, track in enumerate(tracks):
         for message in track.messages:
+            # A little dark magic.
             message.kwargs["track"] = i
             messages.append(message)
 

@@ -1,6 +1,8 @@
 """
 Contains a description of what a note is.
 """
+import copy
+
 NOTES = {"C": 0, "C#": 1, "Db": 1, "D": 2, "D#": 3, "Eb": 3, "E": 4, "F": 5, "F#": 6,
          "Gb": 6, "G": 7, "G#": 8, "Ab": 8, "A": 9, "A#": 10, "Bb": 10, "B": 11}
 
@@ -10,8 +12,15 @@ class BasicNote:
     Information about note out of time.
     """
 
-    def __init__(self, note: int, octave: int):
-        self.note = note
+    def __init__(self, note: int | str, octave: int):
+        """
+        :param note: Note (0..11).
+        :param octave: Octave.
+        """
+        if isinstance(note, str):
+            self.note = NOTES[note]
+        if isinstance(note, int):
+            self.note = note
         self.octave = octave
         self._normalize()
 
@@ -38,14 +47,12 @@ class BasicNote:
         """
         >>> BasicNote(11, 0) + 1 == BasicNote(0, 1)
         True
+        Note: Uses 'copy.copy' for copy obejct if class does not consist 'copy' function.
         """
-        note = self.copy()
+        note = self.copy() if hasattr(self, "copy") else copy.copy(self)
         note.note += other
         note._normalize()
         return note
-
-    def copy(self):
-        return BasicNote(self.note, self.octave)
 
     def __sub__(self, other: int):
         return self.__add__(-other)
@@ -93,7 +100,3 @@ class Note(BasicNote):
                     "duration": self.duration, "delay": self.delay, "start_end": self.start_end})
 
     __repr__ = __str__
-
-    def copy(self):
-        note = Note(self.note, self.octave, self.velocity, self.duration, self.delay, self.start_end)
-        return note

@@ -1,7 +1,7 @@
 import re
-from typing import List, Union
+from typing import List
 
-from note import NOTES, Note, BasicNote
+from note import Note, BasicNote
 
 
 class PianoChord:
@@ -20,17 +20,17 @@ class PianoChord:
         """
         keys = re.split("(m)", chord)
 
-        self.tonic: BasicNote = BasicNote(NOTES[keys[0]], octave)
+        self.tonic: BasicNote = BasicNote(keys[0], octave)
 
         self.notes: List[BasicNote] = [self.tonic, self.tonic + 4, self.tonic + 7]
         if len(keys) > 1:
             if keys[1] == "m":
                 self.notes[1] -= 1
 
-        if is_sorted:
-            self.sort()
         if is_normalized:
             self.normalize()
+        if is_sorted:
+            self.sort()
 
     def sort(self):
         """
@@ -40,7 +40,7 @@ class PianoChord:
 
     def normalize(self):
         """
-        Brings all notes into one octave (the octave of the tonic is taken as the main one).
+        Combines all notes into one octave (the octave of the tonic is taken as the main one).
         """
         for i, note in enumerate(self.notes):
             self.notes[i].octave = self.tonic.octave

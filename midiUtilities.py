@@ -2,7 +2,7 @@
 Module for working with midi-messages and files based mido module.
 """
 import os.path
-from typing import List, Union
+from typing import List
 
 import mido
 
@@ -67,7 +67,7 @@ class MidiTrack:
         return track
 
 
-def transform_time(messages: List[MidiMessage], bmp: Union[int, float],
+def transform_time(messages: List[MidiMessage], bmp: int | float,
                    ticks_per_beat: int = 480, to_tick: bool = True) -> List[MidiMessage]:
     """
     Transforms raw midi-messages to midi-message with the necessary time’s attributes.
@@ -99,18 +99,7 @@ def transform_time(messages: List[MidiMessage], bmp: Union[int, float],
     return messages
 
 
-def _write_to_file(tracks: List[MidiTrack], path: str):
-    """
-    Helper for 'write_to_file' function.
-    """
-    for track in tracks:
-        midi = mido.MidiFile()
-        midi.tracks.append(track.toMido())
-        midi.save(os.path.join(path, track.label + ".midi"))
-
-
-def write_to_file(tracks: List[MidiTrack], path: str, bmp: int,
-                  ticks_per_beat: int = 480):
+def write_to_file(tracks: List[MidiTrack], path: str, bmp: int, ticks_per_beat: int = 480):
     """
     Writes each track to a separate midi-file.
     Performs necessary transformations before recording.
@@ -122,4 +111,7 @@ def write_to_file(tracks: List[MidiTrack], path: str, bmp: int,
     """
     for i, track in enumerate(tracks):
         tracks[i].messages = transform_time(track.messages, bmp=bmp, ticks_per_beat=ticks_per_beat)
-    _write_to_file(tracks, path)
+    for track in tracks:
+        midi = mido.MidiFile()
+        midi.tracks.append(track.toMido())
+        midi.save(os.path.join(path, track.label + ".midi"))
