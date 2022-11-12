@@ -27,6 +27,17 @@ class MidiMessage:
         """
         return mido.Message(type=self.kind, time=self.time, **self.kwargs)
 
+    def __eq__(self, other):
+        if isinstance(other, MidiMessage):
+            return self.kind == other.kind and self.time == other.time and self.kwargs == other.kwargs
+        return False
+
+    def __str__(self):
+        return str({"kind": self.kind, "time": self.time, "kwargs": self.kwargs})
+
+    __repr__ = __str__
+
+
 
 class MidiTrack:
     """
@@ -60,7 +71,7 @@ class MidiTrack:
         :return: mido.MidiTrack corresponding to this track.
         """
         track = mido.MidiTrack()
-        track.append(mido.MetaMessage(mido.MetaMessage('track_name', name=self.label)))
+        # track.append(mido.MetaMessage(mido.MetaMessage('track_name', name=self.label)))
         track.append(mido.Message(type="program_change", program=self.instrument, time=0))
         for message in self.messages:
             track.append(message.toMido())

@@ -30,7 +30,7 @@ class BasicNote:
 
         :return: Midi-note number corresponding to the given note and octave.
         """
-        return (self.octave + 1) * 12 + self.note
+        return self.octave * 12 + self.note
 
     def _normalize(self):
         """
@@ -47,6 +47,7 @@ class BasicNote:
         """
         >>> BasicNote(11, 0) + 1 == BasicNote(0, 1)
         True
+
         Note: Uses 'copy.copy' for copy obejct if class does not consist 'copy' function.
         """
         note = self.copy() if hasattr(self, "copy") else copy.copy(self)
@@ -71,14 +72,16 @@ class BasicNote:
 class Note(BasicNote):
     """
     Information about note and her time.
+    >>> Note(11, 0, 64, 1/2, 1/2, True) + 1 == BasicNote(0, 1)
+    False
     """
 
     def __init__(self, note: int, octave: int, velocity: int, duration: float, delay: float, start_end: bool):
         """
         :param note: Note (0..11).
-        :param octave: Octave.
+        :param octave: Octave (0..1).
         :param duration: Duration in musical note duration.
-        :param velocity: Volume of note.
+        :param velocity: Volume of note (0..255).
         :param delay: Delay in musical note duration.
         :param start_end: Delay after the start or end of the previous note.
         """

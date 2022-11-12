@@ -6,12 +6,10 @@ from piano import PianoChord, Piano
 
 class TestPianoChord(TestCase):
     def test_init(self):
-        for note in NOTES.keys():
-            _note = BasicNote(0, 3) + NOTES[note]
-            assert PianoChord(note, 3, is_normalized=False).notes == [_note, _note + 4, _note + 7], \
-                (_note, PianoChord(note, 3))
-            assert PianoChord(note + "m", 3, is_normalized=False).notes == [_note, _note + 3, _note + 7], \
-                (_note, PianoChord(note + "m", 3))
+        for name in NOTES.keys():
+            note = BasicNote(0, 3) + NOTES[name]
+            assert PianoChord(name, 3, is_normalized=False).notes == [note, note + 4, note + 7]
+            assert PianoChord(name + "m", 3, is_normalized=False).notes == [note, note + 3, note + 7]
 
 
 class TestPiano(TestCase):
@@ -19,6 +17,9 @@ class TestPiano(TestCase):
         note1 = Note(0, 3, velocity=64, duration=1, delay=0, start_end=True)
         assert Piano.play_chord([BasicNote(0, 3), BasicNote(1, 3)]) == [note1, note1 + 1]
 
-        note2 = Note(1, 3, velocity=100, duration=1 / 2, delay=1 / 8, start_end=False)
-        assert Piano.play_chord([BasicNote(0, 3), BasicNote(1, 3)], velocity=[64, 100], duration=[1, 1 / 2],
-                                delay=[0, 1 / 8], start_end=[True, False]) == [note1, note2]
+        note2 = Note(1, 3, velocity=100, duration=2, delay=8, start_end=False)
+        assert Piano.play_chord([BasicNote(0, 3), BasicNote(1, 3)], velocity=[64, 100], duration=[1, 2],
+                                delay=[0, 8], start_end=[True, False]) == [note1, note2]
+
+        assert Piano.play_chord([BasicNote(0, 3), BasicNote(1, 3)], velocity=2*[64, 100], duration=2*[1, 2],
+                                delay=2*[0, 8], start_end=2*[True, False], order=2*[0, 1]) == 2*[note1, note2]

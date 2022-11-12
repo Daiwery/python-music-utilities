@@ -49,7 +49,7 @@ class PianoChord:
         return self.notes[item]
 
     def __str__(self):
-        return str({"tonic": self.tonic, "notes": str(self.notes)})
+        return str({"tonic": self.tonic, "notes": self.notes})
 
     __repr__ = __str__
 
@@ -77,7 +77,9 @@ class Piano:
         :param start_end: Delay after the start or end of the previous note.
         :return: List of note.
         """
-        _len = len(chord)
+        if order is None:
+            order = [i for i in range(len(chord))]
+        _len = len(order)
 
         if not hasattr(duration, "__getitem__"):
             duration = [duration] * _len
@@ -90,9 +92,6 @@ class Piano:
 
         if not hasattr(velocity, "__getitem__"):
             velocity = [velocity] * _len
-
-        if order is None:
-            order = [i for i in range(_len)]
 
         notes = []
         for i, note in enumerate(order):

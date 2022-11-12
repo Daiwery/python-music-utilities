@@ -14,27 +14,27 @@ class Sequence:
 
     def __init__(self, notes: List[Note], id_track, next_sequences=None, delay: float = 0, start_end: bool = False):
         """
-        @param notes: List of notes.
-        @param id_track: The track's id, which this sequence belongs.
-        @param next_sequences: List of Sequences that come after this sequence.
-        @param delay: Delay in musical note duration.
-        @param start_end: Delay after the start or end of the previous sequence.
+        :param notes: List of notes.
+        :param id_track: The track's id, which this sequence belongs.
+        :param next_sequences: List of Sequences that come after this sequence.
+        :param delay: Delay in musical note duration.
+        :param start_end: Delay after the start or end of the previous sequence.
         """
         if next_sequences is None:
             next_sequences = []
         self.notes: List[Note] = notes
         self.id_track = id_track
-        self.sequences = next_sequences
+        self.next_sequences = next_sequences
         self.delay = delay
         self.start_end = start_end
 
-    def _toMidi(self) -> (List[MidiMessage], float):
+    def toMidi(self) -> (List[MidiMessage], float):
         """
         Converts a list of notes to a list of MidiMessages with
         an absolute time value (relative to the start of the sequence).
         Time in musical note duration.
 
-        @return: Tuple of the form: (List of MidiMessages, sequence's duration).
+        :return: Tuple of the form: (List of MidiMessages, sequence's duration).
         """
         messages = []
         global_time = 0
@@ -55,11 +55,11 @@ class Sequence:
         Turns itself and all sequences into a list of tuples of the form: (track, sequence message list).
         This function calls itself recursively, adding data to the final result.
 
-        @param last_start_time: The start time of the past sequence.
-        @param last_end_time: The end time of the past sequence.
-        @return: List of tuples of the form: (track, sequence message list).
+        :param last_start_time: The start time of the past sequence.
+        :param last_end_time: The end time of the past sequence.
+        :return: List of tuples of the form: (track, sequence message list).
         """
-        messages, duration = self._toMidi()
+        messages, duration = self.toMidi()
 
         # start_time - the start time of the current sequence.
         # end_time - the end time of the current sequence.
@@ -73,15 +73,25 @@ class Sequence:
             messages[i].time += start_time
 
         results = [(self.id_track, messages)]
-        for sequence in self.sequences:
+        for sequence in self.next_sequences:
             results += sequence.compile(start_time, end_time)
 
         return results
 
+    def __add__(self, other):
+        """
+        Adds the sequence to the next_sequence.
+        Note that the added sequence is returned.
+        """
+        if isinstance(other, Sequence):
+            self.next_sequences.append(other)
+            return other
+        raise TypeError("unsupported operand type(s) for +: 'sequence' and '{}'".format(other.__name__))
+
 
 class Composition:
     """
-    The composition
+    The composition.
     """
 
     def __init__(self):
@@ -94,28 +104,30 @@ class Composition:
         """
         Adds a new track to the composition.
 
-        @param id_track: The track's id.
-        @param instrument: midi-instrument number.
+        :param id_track: The track's id.
+        :param instrument: midi-instrument number.
         """
         if id_track in self.tracks:
-            raise Exception("The track {} already exists.".format(id_track))
+            raise ValueError("The track {} already exists.".format(id_track))
         self.tracks[id_track] = instrument
 
     def add_sequence(self, sequence: Sequence):
         """
         Adds a new initial sequence to the composition.
+        Note that the added sequence is returned.
 
-        @param sequence: The Sequence.
+        :param sequence: The Sequence.
         """
         if sequence.id_track not in self.tracks:
-            raise Exception("The track {} does not exists.".format(sequence.id_track))
+            raise ValueError("The track {} does not exists.".format(sequence.id_track))
         self.initial_sequences.append(sequence)
+        return sequence
 
     def compile(self) -> List[MidiTrack]:
         """
         Compiles the entire composition and returns a list of MidiTracks.
 
-        @return: List of midi-tracks with raw midi-messages..
+        :return: List of midi-tracks with raw midi-messages..
         """
         # Dictionary of the form: {id_track: MidiTrack}
         tracks = {}
