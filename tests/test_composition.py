@@ -7,9 +7,9 @@ from note import Note
 
 class TestSequence(TestCase):
     def test_toMidi(self):
-        n1 = Note(0, 0, velocity=64, duration=1, delay=0, start_end=True)
-        n2 = Note(1, 0, velocity=64, duration=1, delay=1, start_end=False)
-        n3 = Note(2, 0, velocity=64, duration=1, delay=1, start_end=True)
+        n1 = Note(0, -1, velocity=64, duration=1, delay=0, start_end=True)
+        n2 = Note(1, -1, velocity=64, duration=1, delay=1, start_end=False)
+        n3 = Note(2, -1, velocity=64, duration=1, delay=1, start_end=True)
         s = Sequence([n1, n2, n3], "1")
 
         result = s.toMidi()
@@ -22,9 +22,9 @@ class TestSequence(TestCase):
                              MidiMessage("note_off", 4, note=2, velocity=64)]
 
     def test_compile_with_many_tracks(self):
-        n1 = Note(0, 0, velocity=64, duration=1, delay=0, start_end=True)
-        n2 = Note(1, 0, velocity=64, duration=1, delay=1, start_end=False)
-        n3 = Note(2, 0, velocity=64, duration=1, delay=1, start_end=True)
+        n1 = Note(0, -1, velocity=64, duration=1, delay=0, start_end=True)
+        n2 = Note(1, -1, velocity=64, duration=1, delay=1, start_end=False)
+        n3 = Note(2, -1, velocity=64, duration=1, delay=1, start_end=True)
 
         s1 = Sequence([n1, n2, n3], "1")
         s2 = Sequence([n1, n2, n3], "2")

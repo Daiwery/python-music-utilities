@@ -30,7 +30,7 @@ class BasicNote:
 
         :return: Midi-note number corresponding to the given note and octave.
         """
-        return self.octave * 12 + self.note
+        return (self.octave + 1) * 12 + self.note
 
     def _normalize(self):
         """
